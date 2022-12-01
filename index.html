@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>ChatGPT</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body class="myarrow">
+    <div class="page darwin">
+    <webview id="wv1" src="https://chat.openai.com/chat" allowpopups autosize="on" style="width:100%; height:530px">
+   </webview>
+  </div>
+    <script>
+    const webview = document.getElementById('wv1');
+    webview.addEventListener('dom-ready', function() {
+
+      // hide message below text input
+      webview.insertCSS(`
+        .text-xs.text-center {
+        opacity: 0;
+        height: 20px;
+      }`)
+    });
+
+    </script>
+  </body>
+</html>
