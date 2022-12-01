@@ -1,32 +1,39 @@
 {
-  "name": "chatgpt-menubar",
-  "productName": "chatgpt-menubar",
+  "name": "chatgpt-mac",
+  "productName": "chatgpt-mac",
   "version": "0.0.1",
   "description": "Menubar app for ChatGPT",
   "main": "index.js",
   "scripts": {
     "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
+    "package": "electron-forge package --arch arm64,x64",
+    "make": " electron-forge make --arch arm64,x64",
+    "publish": "electron-forge publish --arch arm64,x64",
     "lint": "echo \"No linting configured\""
   },
-  "keywords": [],
+  "keywords": [
+    "chatgpt",
+    "openai",
+    "mac"
+  ],
   "author": {
     "name": "Vince Loewe",
     "email": "vince@lyser.io"
   },
   "license": "MIT",
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0",
     "menubar": "^9.2.3"
   },
   "devDependencies": {
+    "electron-squirrel-startup": "^1.0.0",
     "@electron-forge/cli": "^6.0.4",
     "@electron-forge/maker-deb": "^6.0.4",
+    "@electron-forge/maker-dmg": "^6.0.4",
     "@electron-forge/maker-rpm": "^6.0.4",
     "@electron-forge/maker-squirrel": "^6.0.4",
     "@electron-forge/maker-zip": "^6.0.4",
+    "@electron-forge/publisher-github": "^6.0.4",
+    "dotenv": "^16.0.3",
     "electron": "22.0.0"
   }
 }

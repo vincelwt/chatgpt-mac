@@ -29,6 +29,7 @@ const mb = menubar({
   },
   preloadWindow: true,
   showDockIcon: false,
+  // showOnAllWorkspaces: false,
   // tray,
   icon: image,
   // icon: image,
@@ -36,6 +37,10 @@ const mb = menubar({
 
 mb.on("ready", () => {
   const { window } = mb;
+
+  app.dock.hide();
+
+  // window.setVisibleOnAllWorkspaces(true);
 
   // open in new window
   app.on("web-contents-created", (event, contents) => {

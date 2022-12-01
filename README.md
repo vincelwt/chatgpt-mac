@@ -2,6 +2,8 @@
 
 This is a simple app that makes ChatGPT live in your menubar.
 
-Download from the "Releases" section.
+<p align="center">
+  <img src="./images/screenshot.jpeg" width="700">
+</p>
 
-![Screenshot](./images/screenshot.jpeg)
+Download from the "Releases" section.
