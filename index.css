@@ -5,7 +5,6 @@ body {
   overflow: hidden;
 }
 
-
 .myarrow {
   position: relative;
   padding: 12px 0;
@@ -22,6 +21,12 @@ body {
   top: 0px;
   left: 50%;
   transform: translateX(-50%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .myarrow:before {
+    border-color: transparent transparent #343541 transparent !important;
+  }
 }
 
 .page {

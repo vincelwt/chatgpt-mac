@@ -14,12 +14,18 @@
     const webview = document.getElementById('wv1');
     webview.addEventListener('dom-ready', function() {
 
-      // hide message below text input
+      // hide message below text input and menu bar
       webview.insertCSS(`
         .text-xs.text-center {
-        opacity: 0;
-        height: 20px;
-      }`)
+          opacity: 0;
+          height: 0;
+          margin-bottom: -10px;
+        }
+        
+        .sticky{
+          display: none;
+        }
+      `)
     });
 
     </script>

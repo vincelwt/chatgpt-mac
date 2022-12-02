@@ -1,7 +1,7 @@
 const { menubar } = require("menubar");
 
 const path = require("path");
-const { app, nativeImage, shell } = require("electron");
+const { app, nativeImage, shell, Menu, MenuItem } = require("electron");
 
 const image = nativeImage.createFromPath(
   path.join(__dirname, `images/newiconTemplate.png`)
@@ -35,12 +35,34 @@ const mb = menubar({
   // icon: image,
 });
 
+const menu = new Menu();
+menu.append(
+  new MenuItem({
+    label: "Open",
+    submenu: [
+      {
+        role: "file",
+        accelerator:
+          process.platform === "darwin" ? "Alt+Cmd+G" : "Alt+Shift+G",
+        click: () => {
+          mb.showWindow();
+        },
+      },
+    ],
+  })
+);
+
+// app.whenReady().then(createWindow);
+
 mb.on("ready", () => {
   const { window } = mb;
 
+  Menu.setApplicationMenu(menu);
+
   app.dock.hide();
 
-  // window.setVisibleOnAllWorkspaces(true);
+  // open devtools
+  window.webContents.openDevTools();
 
   // open in new window
   app.on("web-contents-created", (event, contents) => {
@@ -53,41 +75,12 @@ mb.on("ready", () => {
 
   console.log("Menubar app is ready.");
 });
-// });
 
-// const createWindow = () => {
-//   // Create the browser window.
-//   const mainWindow = new BrowserWindow({
-//     width: 800,
-//     height: 600,
-//     webPreferences: {
-//       preload: path.join(__dirname, "preload.js"),
-//     },
-//   });
-
-//   mainWindow.loadURL("https://chat.openai.com/chat");
-
-// };
-
-// // This method will be called when Electron has finished
-// // initialization and is ready to create browser windows.
-// // Some APIs can only be used after this event occurs.
-// app.on("ready", createWindow);
-
-// // Quit when all windows are closed, except on macOS. There, it's common
-// // for applications and their menu bar to stay active until the user quits
-// // explicitly with Cmd + Q.
-// app.on("window-all-closed", () => {
-//   if (process.platform !== "darwin") {
-//     app.quit();
-//   }
-// });
-
-// app.on("activate", () => {
-//   // On OS X it's common to re-create a window in the app when the
-//   // dock icon is clicked and there are no other windows open.
-//   if (BrowserWindow.getAllWindows().length === 0) {
-//     createWindow();
-//   }
-// });
-// \
+// Quit when all windows are closed, except on macOS. There, it's common
+// for applications and their menu bar to stay active until the user quits
+// explicitly with Cmd + Q.
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
+});
