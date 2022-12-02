@@ -5,6 +5,7 @@ const {
   app,
   nativeImage,
   shell,
+  Tray,
   Menu,
   MenuItem,
   globalShortcut,
@@ -14,56 +15,65 @@ const image = nativeImage.createFromPath(
   path.join(__dirname, `images/newiconTemplate.png`)
 );
 
-const mb = menubar({
-  browserWindow: {
-    icon: image,
-    transparent: path.join(__dirname, `images/iconApp.png`),
-    webPreferences: {
-      webviewTag: true,
-      nativeWindowOpen: true,
+app.on("ready", () => {
+  const tray = new Tray(image);
+
+  const contextMenu = Menu.buildFromTemplate([
+    { role: "about" },
+    { type: "separator" },
+    { role: "quit" },
+  ]);
+
+  const mb = menubar({
+    browserWindow: {
+      icon: image,
+      transparent: path.join(__dirname, `images/iconApp.png`),
+      webPreferences: {
+        webviewTag: true,
+        nativeWindowOpen: true,
+      },
+      width: 450,
+      height: 550,
     },
-    width: 450,
-    height: 550,
-  },
-  preloadWindow: true,
-  showDockIcon: false,
-  icon: image,
-});
-
-mb.on("ready", () => {
-  app.dock.hide();
-
-  const { window } = mb;
-
-  const menu = new Menu();
-
-  let isShown = false;
-  menu
-    .on("after-show", () => {
-      isShown = true;
-    })
-    .on("after-hide", () => {
-      isShown = false;
-    })
-    .on("focus-lost", () => {
-      isShown = false;
-    });
-
-  globalShortcut.register("CommandOrControl+Shift+g", () => {
-    console.log(window.isFocused(), window.isVisible());
-    if (window.isVisible()) {
-      mb.hideWindow();
-    } else {
-      mb.showWindow();
-      mb.app.show();
-      mb.app.focus();
-    }
+    tray,
+    preloadWindow: true,
+    showDockIcon: false,
+    icon: image,
   });
 
-  Menu.setApplicationMenu(menu);
+  mb.on("ready", () => {
+    app.dock.hide();
 
-  // open devtools
-  // window.webContents.openDevTools();
+    tray.on("right-click", () => {
+      mb.tray.popUpContextMenu(contextMenu);
+    });
+
+    const { window } = mb;
+
+    const menu = new Menu();
+
+    globalShortcut.register("CommandOrControl+Shift+g", () => {
+      console.log(window.isFocused(), window.isVisible());
+      if (window.isVisible()) {
+        mb.hideWindow();
+      } else {
+        mb.showWindow();
+        mb.app.show();
+        mb.app.focus();
+      }
+    });
+
+    Menu.setApplicationMenu(menu);
+
+    // open devtools
+    // window.webContents.openDevTools();
+
+    console.log("Menubar app is ready.");
+  });
+
+  mb.on("after-hide", () => {
+    mb.app.hide();
+  });
 
   // open in new window
   app.on("web-contents-created", (event, contents) => {
@@ -73,19 +83,13 @@ mb.on("ready", () => {
     });
   });
 
-  console.log("Menubar app is ready.");
+  // prevent background flickering
+  app.commandLine.appendSwitch(
+    "disable-backgrounding-occluded-windows",
+    "true"
+  );
 });
-
-// prevent background flickering
-mb.app.commandLine.appendSwitch(
-  "disable-backgrounding-occluded-windows",
-  "true"
-);
-
 // restore focus to previous app on hiding
-mb.on("after-hide", () => {
-  mb.app.hide();
-});
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
