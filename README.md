@@ -6,8 +6,8 @@ You can use Cmd+Shift+G to quickly open it from anywhere.
 
 Download:
 
-- [Mac Arm64 .dmg](https://github.com/vincelwt/chatgpt-mac/releases/download/v0.0.2/ChatGPT-0.0.2-arm64.dmg)
-- [Mac Intel .dmg](https://github.com/vincelwt/chatgpt-mac/releases/download/v0.0.2/ChatGPT-0.0.2-x64.dmg)
+- [Mac Arm64 .dmg](https://github.com/vincelwt/chatgpt-mac/releases/download/v0.0.3/ChatGPT-0.0.3-arm64.dmg)
+- [Mac Intel .dmg](https://github.com/vincelwt/chatgpt-mac/releases/download/v0.0.3/ChatGPT-0.0.3-x64.dmg)
 
 <p align="center">
   <img src="./images/screenshot.jpeg" width="500">

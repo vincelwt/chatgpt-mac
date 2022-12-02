@@ -30,7 +30,7 @@ app.on("ready", () => {
       transparent: path.join(__dirname, `images/iconApp.png`),
       webPreferences: {
         webviewTag: true,
-        nativeWindowOpen: true,
+        // nativeWindowOpen: true,
       },
       width: 450,
       height: 550,
@@ -76,12 +76,12 @@ app.on("ready", () => {
   });
 
   // open in new window
-  app.on("web-contents-created", (event, contents) => {
-    contents.on("will-navigate", (event, navigationUrl) => {
-      event.preventDefault();
-      shell.openExternal(navigationUrl);
-    });
-  });
+  // app.on("web-contents-created", (event, contents) => {
+  //   contents.on("will-navigate", (event, navigationUrl) => {
+  //     event.preventDefault();
+  //     shell.openExternal(navigationUrl);
+  //   });
+  // });
 
   // prevent background flickering
   app.commandLine.appendSwitch(
