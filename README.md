@@ -2,6 +2,8 @@
 
 This is a simple app that makes ChatGPT live in your menubar.
 
+You can quickly open it with Cmd+Alt+G
+
 Download:
 
 - [Mac Arm64 .dmg](https://github.com/vincelwt/chatgpt-mac/releases/download/v0.0.1/ChatGPT-0.0.1-arm64.dmg)
