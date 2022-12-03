@@ -34,7 +34,7 @@
     "@electron-forge/maker-zip": "^6.0.4",
     "@electron-forge/publisher-github": "^6.0.4",
     "dotenv": "^16.0.3",
-    "electron": "22.0.0",
+    "electron": "^21.0.0",
     "electron-squirrel-startup": "^1.0.0"
   }
 }
