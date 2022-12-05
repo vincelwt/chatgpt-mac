@@ -18,6 +18,7 @@ body {
 }
 
 .myarrow:before {
+  display: none;
   content: '';
   height: 0;
   width: 0;
