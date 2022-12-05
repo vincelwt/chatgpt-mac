@@ -36,6 +36,7 @@ app.on("ready", () => {
         webviewTag: true,
         // nativeWindowOpen: true,
       },
+      minWidth: 400,
       width: 500,
       height: 650,
     },
