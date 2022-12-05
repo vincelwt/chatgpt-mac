@@ -16,6 +16,14 @@
 
       // hide message below text input, sidebar, suggestions on new chat
       webview.insertCSS(`
+        .hidden.bg-gray-900 {
+          display: none !important;
+        }
+        
+        [class*="Thread__Wrapper"] > div:first-child{
+          padding-left: 0 !important;
+        }
+
         .text-xs.text-center {
           opacity: 0;
           height: 0;
