@@ -1,25 +1,26 @@
+require("update-electron-app")();
+
 const { menubar } = require("menubar");
+const Nucleus = require("nucleus-analytics");
 
 const path = require("path");
-const { app, nativeImage, Tray, Menu, globalShortcut } = require("electron");
+const {
+  app,
+  nativeImage,
+  Tray,
+  Menu,
+  globalShortcut,
+  shell,
+} = require("electron");
 const contextMenu = require("electron-context-menu");
 
 const image = nativeImage.createFromPath(
   path.join(__dirname, `images/newiconTemplate.png`)
 );
 
-const contextMenuTemplate = [
-  { role: "about" },
-  {
-    label: "Quit",
-    accelerator: "Command+Q",
-    click: function () {
-      app.quit();
-    },
-  },
-];
-
 app.on("ready", () => {
+  Nucleus.init("638d9ccf4a5ed2dae43ce122");
+
   const tray = new Tray(image);
 
   const mb = menubar({
@@ -34,7 +35,7 @@ app.on("ready", () => {
       height: 550,
     },
     tray,
-    showOnAllWorkspaces: false,
+    showOnAllWorkspaces: true,
     preloadWindow: true,
     showDockIcon: false,
     icon: image,
@@ -43,11 +44,51 @@ app.on("ready", () => {
   mb.on("ready", () => {
     const { window } = mb;
 
+
     if (process.platform !== "darwin") {
       window.setSkipTaskbar(true);
     } else {
       app.dock.hide();
     }
+
+    const contextMenuTemplate = [
+      // add links to github repo and vince's twitter
+      {
+        label: "Quit",
+        accelerator: "Command+Q",
+        click: () => {
+          app.quit();
+        },
+      },
+      {
+        label: "Reload",
+        accelerator: "Command+R",
+        click: () => {
+          window.reload();
+        },
+      },
+      {
+        label: "Open in browser",
+        click: () => {
+          shell.openExternal("https://chat.openai.com/chat");
+        },
+      },
+      {
+        type: "separator",
+      },
+      {
+        label: "View on GitHub",
+        click: () => {
+          shell.openExternal("https://github.com/vincelwt/chatgpt-mac");
+        },
+      },
+      {
+        label: "Author on Twitter",
+        click: () => {
+          shell.openExternal("https://twitter.com/vincelwt");
+        },
+      },
+    ];
 
     tray.on("right-click", () => {
       mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));

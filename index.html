@@ -7,28 +7,45 @@
   </head>
   <body class="myarrow">
     <div class="page darwin">
-      <webview id="wv1" src="https://chat.openai.com/chat" nodeintegration="on" autosize="on"
-        style="width:100%; height:530px">
-      </webview>
-    </div>
+    <webview id="webview" src="https://chat.openai.com/chat" autosize="on" >
+   </webview>
+  </div>
     <script>
-      const webview = document.getElementById('wv1');
-      webview.addEventListener('dom-ready', function () {
+    const webview = document.getElementById('webview');
+    webview.addEventListener('dom-ready', function() {
 
-        // hide message below text input and menu bar
-        webview.insertCSS(`
-            .text-xs.text-center {
-              opacity: 0;
-              height: 0;
-              margin-bottom: -10px;
-            }
-            
-            .sticky,
-            .pointer-events-auto.flex.border-orange-500{
-              display: none;
-            }
-          `)
-      });
+      // hide message below text input, sidebar, suggestions on new chat
+      webview.insertCSS(`
+        .text-xs.text-center {
+          opacity: 0;
+          height: 0;
+          margin-bottom: -10px;
+        }
+        
+        .sticky,
+        .pointer-events-auto.flex.border-orange-500,
+        [class*="shared__Capabilities"] {
+          display: none !important;
+        }
+
+        [class*="shared__Wrapper"] {
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          margin-top: 15vh;
+        }
+
+        [class*="shared__Wrapper"] h3 {
+          margin-top: -40px;
+          font-size: 20px;
+        }
+      `)
+
+      const element = webview.executeJavaScript(`
+        document.querySelector("[class*='shared__Wrapper']").innerHTML += "<h3>Start by asking anything.</h3>"
+      `);
+    });
+
     </script>
   </body>
 </html>
