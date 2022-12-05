@@ -51,6 +51,18 @@
 
       const element = webview.executeJavaScript(`
         document.querySelector("[class*='shared__Wrapper']").innerHTML += "<h3>Start by asking anything.</h3>"
+        
+        const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+        mediaQuery.addListener(updateStyles);
+        updateStyles(mediaQuery);
+
+        function updateStyles(mq) {
+          if (mq.matches) {
+            document.body.classList.add("dark");
+          } else {
+            document.body.classList.remove("dark");
+          }
+        }
       `);
     });
 
