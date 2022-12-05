@@ -30,7 +30,7 @@ app.on("ready", () => {
       height: 550,
     },
     tray,
-    showOnAllWorkspaces: false,
+    showOnAllWorkspaces: true,
     preloadWindow: true,
     showDockIcon: false,
     icon: image,
@@ -44,15 +44,21 @@ app.on("ready", () => {
       {
         label: "Quit",
         accelerator: "Command+Q",
-        click: function () {
+        click: () => {
           app.quit();
         },
       },
       {
         label: "Reload",
         accelerator: "Command+R",
-        click: function () {
+        click: () => {
           window.reload();
+        },
+      },
+      {
+        label: "Open in browser",
+        click: () => {
+          shell.openExternal("https://chat.openai.com/chat");
         },
       },
       {
@@ -93,7 +99,7 @@ app.on("ready", () => {
     Menu.setApplicationMenu(menu);
 
     // open devtools
-    window.webContents.openDevTools();
+    // window.webContents.openDevTools();
 
     console.log("Menubar app is ready.");
   });
