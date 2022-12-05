@@ -49,6 +49,7 @@ app.on("ready", () => {
   mb.on("ready", () => {
     const { window } = mb;
 
+    window.setAlwaysOnTop(true, "floating", 1);
 
     if (process.platform !== "darwin") {
       window.setSkipTaskbar(true);
