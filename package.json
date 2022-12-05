@@ -23,7 +23,13 @@
   "license": "MIT",
   "dependencies": {
     "electron-context-menu": "^3.6.0",
-    "menubar": "^9.2.3"
+    "menubar": "^9.2.3",
+    "nucleus-analytics": "^4.0.3",
+    "update-electron-app": "^2.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vincelwt/chatgpt-mac"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.4",
