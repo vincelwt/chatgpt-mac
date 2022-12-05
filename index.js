@@ -44,6 +44,13 @@ app.on("ready", () => {
   mb.on("ready", () => {
     const { window } = mb;
 
+
+    if (process.platform !== "darwin") {
+      window.setSkipTaskbar(true);
+    } else {
+      app.dock.hide();
+    }
+
     const contextMenuTemplate = [
       // add links to github repo and vince's twitter
       {
@@ -83,8 +90,6 @@ app.on("ready", () => {
       },
     ];
 
-    app.dock.hide();
-
     tray.on("right-click", () => {
       mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));
     });
@@ -96,7 +101,9 @@ app.on("ready", () => {
         mb.hideWindow();
       } else {
         mb.showWindow();
-        mb.app.show();
+        if (process.platform == "darwin") {
+          mb.app.show();
+        }
         mb.app.focus();
       }
     });
@@ -137,10 +144,12 @@ app.on("ready", () => {
     }
   });
 
-  // restore focus to previous app on hiding
-  mb.on("after-hide", () => {
-    mb.app.hide();
-  });
+  if (process.platform == "darwin") {
+    // restore focus to previous app on hiding
+    mb.on("after-hide", () => {
+      mb.app.hide();
+    });
+  }
 
   // open links in new window
   // app.on("web-contents-created", (event, contents) => {
