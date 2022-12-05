@@ -1,23 +1,19 @@
 const { menubar } = require("menubar");
 
 const path = require("path");
-const { app, nativeImage, Tray, Menu, globalShortcut } = require("electron");
+const {
+  app,
+  nativeImage,
+  Tray,
+  Menu,
+  globalShortcut,
+  shell,
+} = require("electron");
 const contextMenu = require("electron-context-menu");
 
 const image = nativeImage.createFromPath(
   path.join(__dirname, `images/newiconTemplate.png`)
 );
-
-const contextMenuTemplate = [
-  { role: "about" },
-  {
-    label: "Quit",
-    accelerator: "Command+Q",
-    click: function () {
-      app.quit();
-    },
-  },
-];
 
 app.on("ready", () => {
   const tray = new Tray(image);
@@ -41,13 +37,47 @@ app.on("ready", () => {
   });
 
   mb.on("ready", () => {
+    const { window } = mb;
+
+    const contextMenuTemplate = [
+      // add links to github repo and vince's twitter
+      {
+        label: "Quit",
+        accelerator: "Command+Q",
+        click: function () {
+          app.quit();
+        },
+      },
+      {
+        label: "Reload",
+        accelerator: "Command+R",
+        click: function () {
+          window.reload();
+        },
+      },
+      {
+        type: "separator",
+      },
+      {
+        label: "View on GitHub",
+        click: () => {
+          shell.openExternal("https://github.com/vincelwt/chatgpt-mac");
+        },
+      },
+      {
+        label: "Author on Twitter",
+        click: () => {
+          shell.openExternal("https://twitter.com/vincelwt");
+        },
+      },
+    ];
+
     app.dock.hide();
 
     tray.on("right-click", () => {
       mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));
     });
 
-    const { window } = mb;
     const menu = new Menu();
 
     globalShortcut.register("CommandOrControl+Shift+g", () => {
@@ -63,7 +93,7 @@ app.on("ready", () => {
     Menu.setApplicationMenu(menu);
 
     // open devtools
-    // window.webContents.openDevTools();
+    window.webContents.openDevTools();
 
     console.log("Menubar app is ready.");
   });

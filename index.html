@@ -7,11 +7,11 @@
   </head>
   <body class="myarrow">
     <div class="page darwin">
-    <webview id="wv1" src="https://chat.openai.com/chat" nodeintegration="on" autosize="on" style="width:100%; height:530px">
+    <webview id="webview" src="https://chat.openai.com/chat" autosize="on" >
    </webview>
   </div>
     <script>
-    const webview = document.getElementById('wv1');
+    const webview = document.getElementById('webview');
     webview.addEventListener('dom-ready', function() {
 
       // hide message below text input and menu bar
