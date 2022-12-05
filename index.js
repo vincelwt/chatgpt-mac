@@ -1,4 +1,5 @@
 require("update-electron-app")();
+const electronReload = require("electron-reload");
 
 const { menubar } = require("menubar");
 const Nucleus = require("nucleus-analytics");
@@ -17,6 +18,10 @@ const contextMenu = require("electron-context-menu");
 const image = nativeImage.createFromPath(
   path.join(__dirname, `images/newiconTemplate.png`)
 );
+
+require("electron-reload")(__dirname, {
+  electron: path.join(__dirname, "node_modules", ".bin", "electron"),
+});
 
 app.on("ready", () => {
   Nucleus.init("638d9ccf4a5ed2dae43ce122");
