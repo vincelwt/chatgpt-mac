@@ -90,10 +90,12 @@ app.on("ready", () => {
       },
     ];
 
-    tray.on("right-click", () => {
-      mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));
+    tray.on("click", (e) => {
+      //show context menu if ctrl or meta key is pressed while clicking or right click
+      e.ctrlKey || e.metaKey || e.button == 2
+        ? mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate))
+        : null;
     });
-
     const menu = new Menu();
 
     globalShortcut.register("CommandOrControl+Shift+g", () => {
