@@ -90,9 +90,13 @@ app.on("ready", () => {
       },
     ];
 
+    tray.on("right-click", () => {
+      mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));
+    });
+
     tray.on("click", (e) => {
-      //show context menu if ctrl or meta key is pressed while clicking or right click
-      e.ctrlKey || e.metaKey || e.button == 2
+      //check if ctrl or meta key is pressed while clicking
+      e.ctrlKey || e.metaKey
         ? mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate))
         : null;
     });
