@@ -33,6 +33,7 @@ app.on("ready", () => {
       },
       width: 450,
       height: 550,
+      resizable: true,
     },
     tray,
     showOnAllWorkspaces: true,
