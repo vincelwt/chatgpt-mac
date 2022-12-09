@@ -99,6 +99,12 @@ app.on("ready", () => {
       mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));
     });
 
+    tray.on("click", (e) => {
+      //check if ctrl or meta key is pressed while clicking
+      e.ctrlKey || e.metaKey
+        ? mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate))
+        : null;
+    });
     const menu = new Menu();
 
     globalShortcut.register("CommandOrControl+Alt+g", () => {
