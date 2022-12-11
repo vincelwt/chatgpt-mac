@@ -108,6 +108,12 @@ app.on("ready", () => {
       }
     });
 
+    globalShortcut.register("Escape", () => {
+      if (window.isVisible()) {
+        mb.hideWindow();
+      }
+    });
+
     Menu.setApplicationMenu(menu);
 
     // open devtools
