@@ -1,4 +1,5 @@
 require("update-electron-app")();
+const electronReload = require("electron-reload");
 
 const { menubar } = require("menubar");
 const Nucleus = require("nucleus-analytics");
@@ -18,6 +19,10 @@ const image = nativeImage.createFromPath(
   path.join(__dirname, `images/newiconTemplate.png`)
 );
 
+require("electron-reload")(__dirname, {
+  electron: path.join(__dirname, "node_modules", ".bin", "electron"),
+});
+
 app.on("ready", () => {
   Nucleus.init("638d9ccf4a5ed2dae43ce122");
 
@@ -31,8 +36,9 @@ app.on("ready", () => {
         webviewTag: true,
         // nativeWindowOpen: true,
       },
-      width: 450,
-      height: 550,
+      minWidth: 400,
+      width: 500,
+      height: 650,
     },
     tray,
     showOnAllWorkspaces: true,
@@ -43,8 +49,7 @@ app.on("ready", () => {
 
   mb.on("ready", () => {
     const { window } = mb;
-
-
+    window.setAlwaysOnTop(true, "floating", 1);
     if (process.platform !== "darwin") {
       window.setSkipTaskbar(true);
     } else {
@@ -102,7 +107,7 @@ app.on("ready", () => {
     });
     const menu = new Menu();
 
-    globalShortcut.register("CommandOrControl+Shift+g", () => {
+    globalShortcut.register("CommandOrControl+Alt+g", () => {
       if (window.isVisible()) {
         mb.hideWindow();
       } else {
