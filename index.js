@@ -11,6 +11,7 @@ const {
   Menu,
   globalShortcut,
   shell,
+  MenuItem,
 } = require("electron");
 const contextMenu = require("electron-context-menu");
 
@@ -95,6 +96,14 @@ app.on("ready", () => {
     });
 
     const menu = new Menu();
+    
+    menu.append(new MenuItem({
+      label: 'Local Shortcuts',
+      submenu: [{
+        role: 'exit',
+        accelerator: 'Esc', click: () => { mb.hideWindow() }
+      }]
+    }))
 
     globalShortcut.register("CommandOrControl+Shift+g", () => {
       if (window.isVisible()) {
@@ -105,12 +114,6 @@ app.on("ready", () => {
           mb.app.show();
         }
         mb.app.focus();
-      }
-    });
-
-    globalShortcut.register("Escape", () => {
-      if (window.isVisible()) {
-        mb.hideWindow();
       }
     });
 
