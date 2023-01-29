@@ -6,6 +6,8 @@ const Nucleus = require("nucleus-analytics");
 const path = require("path");
 const {
   app,
+  dialog,
+  ipcMain,
   nativeImage,
   Tray,
   Menu,
@@ -21,6 +23,10 @@ const image = nativeImage.createFromPath(
 app.on("ready", () => {
   Nucleus.init("638d9ccf4a5ed2dae43ce122");
 
+  ipcMain.on('formSubmit', function(event, value){
+    dialog.showErrorBox('Testing', value);
+  })
+
   const tray = new Tray(image);
 
   const mb = menubar({
@@ -29,6 +35,7 @@ app.on("ready", () => {
       transparent: path.join(__dirname, `images/iconApp.png`),
       webPreferences: {
         webviewTag: true,
+        preload: path.join(__dirname, 'preload.js')
         // nativeWindowOpen: true,
       },
       width: 450,
@@ -180,3 +187,4 @@ app.on("window-all-closed", () => {
     app.quit();
   }
 });
+

@@ -1,5 +1,7 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
 contextBridge.exposeInMainWorld('electronAPI', {
-    formSubmit: (value) => ipcRenderer.send('submitForm', value)
+    formSubmit: (event, value) => { 
+        ipcRenderer.send('formSubmit', value);
+    }
 })

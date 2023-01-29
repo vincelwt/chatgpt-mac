@@ -7,12 +7,13 @@
   </head>
   <body class="myarrow">
     <div class="page darwin">
-    <webview id="webview" src="https://chat.openai.com/chat" autosize="on" >
+    <webview id="webview" src="https://chat.openai.com/chat" autosize="on" preload="./webview-preload.js">
    </webview>
   </div>
     <script>
     const webview = document.getElementById('webview');
     webview.addEventListener('dom-ready', function() {
+      webview.openDevTools();      
 
       // hide message below text input, sidebar, suggestions on new chat
       webview.insertCSS(`
@@ -41,10 +42,22 @@
         }
       `)
 
-      const element = webview.executeJavaScript(`
-        document.querySelector("[class*='shared__Wrapper']").innerHTML += "<h3>Start by asking anything.</h3>"
-      `);
+      webview.addEventListener('ipc-message', (event) => {
+        // alert("Received event: " + event.channel + " : " + event.args[0]);
+        const res = window.electronAPI.formSubmit(event.channel, event.args[0]);
+      });
+
+      webview.executeJavaScript(`
+        const form = document.querySelector("form");
+        const textinput = form.querySelector("textarea");
+
+        form.addEventListener("submit", function(event) {           
+            window.YourAPI.formSubmitEvent(textinput.value);
+        });
+      `)      
     });
+
+
 
     </script>
   </body>
