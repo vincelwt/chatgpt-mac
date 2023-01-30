@@ -1,0 +1,7 @@
+{
+  "name": "chatgpt",
+  "dependencies": {
+    "@lemonade/infra-common": "git@github.com:lemonade-hq/infra-common.git",
+    "@pulumi/pulumi": "^3.5.1"
+  }
+}

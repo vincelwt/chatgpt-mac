@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "outDir": "dist",
+    "target": "es6", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019' or 'ESNEXT'. */
+    "moduleResolution": "node",
+    "module": "commonjs", /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
+    "declaration": true, /* Generates corresponding '.d.ts' file. */
+    "sourceMap": true, /* Generates corresponding '.map' file. */
+    "strict": true, /* Enable all strict type-checking options. */
+  }
+}
