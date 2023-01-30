@@ -24,7 +24,7 @@ app.on("ready", () => {
   Nucleus.init("638d9ccf4a5ed2dae43ce122");
 
   ipcMain.on('formSubmit', function(event, value){
-    dialog.showErrorBox('Testing', value);
+    console.log(value);
   })
 
   const tray = new Tray(image);

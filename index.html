@@ -13,7 +13,7 @@
     <script>
     const webview = document.getElementById('webview');
     webview.addEventListener('dom-ready', function() {
-      webview.openDevTools();      
+      // webview.openDevTools();      
 
       // hide message below text input, sidebar, suggestions on new chat
       webview.insertCSS(`
@@ -43,17 +43,29 @@
       `)
 
       webview.addEventListener('ipc-message', (event) => {
-        // alert("Received event: " + event.channel + " : " + event.args[0]);
         const res = window.electronAPI.formSubmit(event.channel, event.args[0]);
       });
+      
 
       webview.executeJavaScript(`
         const form = document.querySelector("form");
         const textinput = form.querySelector("textarea");
+        const btn = form.querySelector("button");
 
         form.addEventListener("submit", function(event) {           
             window.YourAPI.formSubmitEvent(textinput.value);
         });
+
+        form.addEventListener("keydown", function(event) {           
+          if (event.which === 13) {
+            if (!event.repeat) {
+                const newEvent = new Event("submit", {cancelable: true});
+                btn.click();
+            }
+
+            event.preventDefault(); // Prevents the addition of a new line in the text field
+          }
+        }, true);
       `)      
     });
 
