@@ -1,0 +1,3 @@
+@Library('ci-pipeline') _
+
+lemonadeDeploy(serviceName: 'macgpt')
