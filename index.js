@@ -142,7 +142,6 @@ app.on("ready", () => {
           // if shift is also pressed, ignore
           if (input.shift) return;
 
-          console.log("enter pressed");
           // press main > form > button
           contents.executeJavaScript(
             `document.querySelector('main form button').click()`
