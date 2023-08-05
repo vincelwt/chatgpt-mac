@@ -2,7 +2,7 @@ require("update-electron-app")();
 
 const { menubar } = require("menubar");
 const Nucleus = require("nucleus-analytics");
-
+const fs = require("fs");
 const path = require("path");
 const {
   app,
@@ -13,6 +13,7 @@ const {
   shell,
 } = require("electron");
 const contextMenu = require("electron-context-menu");
+const prompt = require("electron-prompt");
 
 const image = nativeImage.createFromPath(
   path.join(__dirname, `images/newiconTemplate.png`)
@@ -20,6 +21,9 @@ const image = nativeImage.createFromPath(
 
 app.on("ready", () => {
   Nucleus.init("638d9ccf4a5ed2dae43ce122");
+  
+  const configPath = path.join(app.getPath("userData"), "config.txt");
+  let configObj = {}
 
   const tray = new Tray(image);
 
@@ -44,6 +48,12 @@ app.on("ready", () => {
   mb.on("ready", () => {
     const { window } = mb;
 
+    if (fs.existsSync(configPath)) {
+      configObj = JSON.parse(fs.readFileSync(configPath, "utf8"))
+    }
+
+    const proxyRules = configObj?.proxyRules ?? ""
+    window.webContents.session.setProxy({ proxyRules })
 
     if (process.platform !== "darwin") {
       window.setSkipTaskbar(true);
@@ -71,6 +81,30 @@ app.on("ready", () => {
         label: "Open in browser",
         click: () => {
           shell.openExternal("https://chat.openai.com/chat");
+        },
+      },
+      {
+        label: "Proxy Setting",
+        click: () => {
+          mb.hideWindow();
+          prompt({
+            title: "Proxy Setting",
+            label: "URL:",
+            value: proxyRules ?? "",
+            inputAttrs: {
+              type: "url",
+              placeholder: "socks5://127.0.0.1:7890",
+            },
+            type: "input"
+          })
+          .then((value) => {
+            if (value?.length) {
+              configObj.proxyRules = value
+              fs.writeFileSync(configPath, JSON.stringify(configObj));
+              window.webContents.session.setProxy({ proxyRules: value })
+              window.reload(); 
+            }
+          })
         },
       },
       {
