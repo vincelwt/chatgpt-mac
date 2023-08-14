@@ -1,7 +1,7 @@
 const { menubar } = require("menubar");
-const Nucleus = require("nucleus-analytics");
 
 const path = require("path");
+
 const {
   app,
   nativeImage,
@@ -9,8 +9,18 @@ const {
   Menu,
   globalShortcut,
   shell,
+  ipcMain,
 } = require("electron");
-const contextMenu = require("electron-context-menu");
+
+const settings = require('electron-settings');
+
+const {
+    initializeShortcut,
+    hasShortcutInSettings,
+    getShortcutFromSettings,
+    setShortcutInSettings,
+    openSettingsWindow,
+   } = require('../pages/settings')
 
 const image = nativeImage.createFromPath(
   path.join(__dirname, `../images/newiconTemplate.png`)
@@ -18,6 +28,29 @@ const image = nativeImage.createFromPath(
 
 let mb = null
 
+// handles the reloading of this application shortcut.
+const reloadShortcut = () => {
+    const { window } = mb;
+
+    if (!hasShortcutInSettings()) {
+        initializeShortcut()
+    }
+
+    // Register a global shortcut using the shortcut obtained from the application settings.
+    globalShortcut.register(getShortcutFromSettings(), () => {
+    if (window.isVisible()) {
+        mb.hideWindow();
+    } else {
+        mb.showWindow();
+        if (process.platform == "darwin") {
+        mb.app.show();
+        }
+        mb.app.focus();
+    }
+    });
+}
+
+// Initialize Menubar browser for loading chatgpt
 const createMenubar = () => {
     const tray = new Tray(image);
 
@@ -41,7 +74,6 @@ const createMenubar = () => {
   
     mb.on("ready", () => {
       const { window } = mb;
-  
   
       if (process.platform !== "darwin") {
         window.setSkipTaskbar(true);
@@ -72,6 +104,13 @@ const createMenubar = () => {
           },
         },
         {
+          label: "Settings",
+          click: () => {
+            listenEditShortcut()
+            openSettingsWindow()
+          },
+        },
+        {
           type: "separator",
         },
         {
@@ -99,28 +138,37 @@ const createMenubar = () => {
           : null;
       });
       const menu = new Menu();
-  
-      globalShortcut.register("CommandOrControl+Shift+g", () => {
-        if (window.isVisible()) {
-          mb.hideWindow();
-        } else {
-          mb.showWindow();
-          if (process.platform == "darwin") {
-            mb.app.show();
-          }
-          mb.app.focus();
-        }
-      });
+
+      reloadShortcut()
   
       Menu.setApplicationMenu(menu);
   
       // open devtools
       // window.webContents.openDevTools();
+
+      if (process.platform == "darwin") {
+        // restore focus to previous app on hiding
+        mb.on("after-hide", () => {
+          mb.app.hide();
+        });
+      }
   
       console.log("Menubar app is ready.");
     });
 
     return mb
+}
+
+// Listen for IPC requests for front-end related to shortcuts such as getting or updating current short
+const listenEditShortcut = () => {
+    ipcMain.on('get-shortcut', (event) => {
+        event.reply('shortcut-data', getShortcutFromSettings());
+    });
+
+    ipcMain.on('update-shortcut', (event, newShortcut) => {
+        setShortcutInSettings(newShortcut)
+        reloadShortcut()
+    });
 }
 
 module.exports = {

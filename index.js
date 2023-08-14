@@ -43,13 +43,6 @@ app.on("ready", () => {
     }
   });
 
-  if (process.platform == "darwin") {
-    // restore focus to previous app on hiding
-    mb.on("after-hide", () => {
-      mb.app.hide();
-    });
-  }
-
   // open links in new window
   // app.on("web-contents-created", (event, contents) => {
   //   contents.on("will-navigate", (event, navigationUrl) => {
