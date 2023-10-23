@@ -1,3 +1,7 @@
+⭐ Building in AI? My new project is an [open-source toolkit for AI devs](https://github.com/llmonitor/llmonitor), a star would mean the world ⭐
+
+---
+
 # ChatGPT for desktop
 
 This is a simple app that makes ChatGPT live in your menubar.
