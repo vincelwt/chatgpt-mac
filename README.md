@@ -7,6 +7,7 @@
 This is a simple app that makes ChatGPT live in your menubar.
 
 You can use Cmd+Shift+G (Mac) or Ctrl+Shift+G (Win) to quickly open it from anywhere.
+- (or using setting window to customize the shortcut in the way you like)
 
 Download:
 
