@@ -44,7 +44,6 @@ app.on("ready", () => {
   mb.on("ready", () => {
     const { window } = mb;
 
-
     if (process.platform !== "darwin") {
       window.setSkipTaskbar(true);
     } else {
@@ -138,7 +137,19 @@ app.on("ready", () => {
       // register cmd+c/cmd+v events
       contents.on("before-input-event", (event, input) => {
         const { control, meta, key } = input;
+
+        if (input.type !== "keyDown" && key == "Enter") {
+          // if shift is also pressed, ignore
+          if (input.shift) return;
+
+          // press main > form > button
+          contents.executeJavaScript(
+            `document.querySelector('main form button').click()`
+          );
+        }
+
         if (!control && !meta) return;
+        if (key === "x") contents.cut();
         if (key === "c") contents.copy();
         if (key === "v") contents.paste();
         if (key === "a") contents.selectAll();
